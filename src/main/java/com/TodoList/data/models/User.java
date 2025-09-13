@@ -14,7 +14,9 @@ public class User {
     @Id
     private String id;
     private String username;
-    private boolean email;
+    private String email;
     private String password;
 
+
 }
+
