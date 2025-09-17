@@ -14,7 +14,8 @@ public class Task {
     @Id
     private String id;
     private String title;
-    private String despcriotion;
+    private String description;
     private boolean completed;
+    private String userId;
 
 }

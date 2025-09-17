@@ -1,16 +1,20 @@
 package com.TodoList.services;
 
 import com.TodoList.data.models.Task;
+import com.TodoList.data.models.User;
 import com.TodoList.data.repositories.TaskRepository;
+import com.TodoList.data.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*; // for assertEquals, assertTrue, etc.
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TaskServiceTest {
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TaskService taskService;
@@ -28,9 +32,7 @@ class TaskServiceTest {
         Task task = new Task();
         task.setTitle("Buy groceries");
         task.setDescription("milk, bread, eggs");
-
-        Task savedTask = taskService.createTask(task);
-
+        Task savedTask = taskService.addTask(task);
         assertNotNull(savedTask.getId());
         assertEquals("Buy groceries", savedTask.getTitle());
         assertTrue(taskRepository.existsById(savedTask.getId()));
@@ -38,14 +40,16 @@ class TaskServiceTest {
 
     @Test
     void markTaskAsCompleted() {
+        User user = new User();
+        user.setPassword("12345");
+        user.setEmail("gift@gmail.com");
+        User savedUser = userRepository.save(user);
         Task task = new Task();
         task.setTitle("Read book");
         task.setDescription("clean code");
-
-        Task savedTask = taskService.createTask(task);
-
-        Task completedTask = taskService.markAsCompleted(savedTask.getId());
-
+        task.setUserId(user.getId());
+        Task savedTask = taskService.addTask(task);
+        Task completedTask = taskService.markCompleted(savedTask.getId(), savedUser.getId());
         assertTrue(completedTask.isCompleted());
     }
 }
