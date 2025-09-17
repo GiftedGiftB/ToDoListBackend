@@ -60,6 +60,20 @@ class TaskServiceTest {
         Task completedTask = taskService.markCompleted(savedTask.getId(), savedUser.getId());
         assertTrue(completedTask.isCompleted());
     }
-    
+    @Test
+    void getTaskById() {
+        User user = new User();
+        user.setPassword("12345");
+        user.setEmail("gift@gmail.com");
+        User savedUser = userRepository.save(user);
+        Task task = new Task();
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setUserId(user.getId());
+        Task savedTask = taskService.addTask(task);
+        Task found = taskService.getTaskById(savedTask.getId());
+        assertNotNull(found);
+        assertEquals("gift", found.getTitle());
+    }
 }
 
