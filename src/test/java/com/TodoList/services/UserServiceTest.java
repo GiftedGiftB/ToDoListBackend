@@ -57,5 +57,5 @@ public class UserServiceTest {
         Exception ex = assertThrows(RuntimeException.class, () -> userService.login("gift@gmail.com", "wrongpass"));
         assertTrue(ex.getMessage().contains("Invalid password"));
     }
-    
+
 }

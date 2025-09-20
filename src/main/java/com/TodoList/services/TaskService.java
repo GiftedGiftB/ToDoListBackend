@@ -12,7 +12,5 @@ public interface TaskService {
     List<TaskResponse> searchTasks(String userId, String keyword);
     TaskResponse markCompleted(String taskId, String userId);
     TaskResponse getTaskById(String taskId);
-
-    // ✅ new update method
     TaskResponse updateTask(String taskId, String userId, TaskRequest request);
 }

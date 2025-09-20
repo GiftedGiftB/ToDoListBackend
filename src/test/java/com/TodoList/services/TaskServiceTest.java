@@ -53,7 +53,6 @@ class TaskServiceTest{
         request.setDescription("Gift task");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         assertFalse(response.isCompleted());
-
         TaskResponse completed = taskService.markCompleted(response.getId(), savedUser.getId());
         assertTrue(completed.isCompleted());
 
@@ -75,11 +74,9 @@ class TaskServiceTest{
         request.setTitle("Old Title");
         request.setDescription("Old Desc");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
-
         TaskRequest update = new TaskRequest();
         update.setTitle("New Title");
         update.setDescription("New Desc");
-
         TaskResponse updated = taskService.updateTask(response.getId(), savedUser.getId(), update);
         assertEquals("New Title", updated.getTitle());
         assertEquals("New Desc", updated.getDescription());
@@ -91,11 +88,7 @@ class TaskServiceTest{
         request.setTitle("Task to delete");
         request.setDescription("Delete me");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
-
-        // delete it
         taskService.deleteTask(response.getId(), savedUser.getId());
-
-        // should not be found anymore
         List<TaskResponse> tasks = taskService.getTasksByUser(savedUser.getId());
         assertTrue(tasks.stream().noneMatch(t -> t.getId().equals(response.getId())));
     }
@@ -115,4 +108,3 @@ class TaskServiceTest{
         assertTrue(found.getFirst().getTitle().toLowerCase().contains("shop"));
     }
 }
-
