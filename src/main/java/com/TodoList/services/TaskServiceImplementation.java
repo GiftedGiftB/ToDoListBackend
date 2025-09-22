@@ -43,21 +43,15 @@ public class TaskServiceImplementation implements TaskService {
 
 
     @Override
-    public void deleteTask(String taskId, String userId){
+    public void deleteTask(String taskId){
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        if (!task.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("Cannot delete task of another user");
-        }
         taskRepository.delete(task);
     }
 
 
     @Override
-    public TaskResponse markCompleted(String taskId, String userId) {
+    public TaskResponse markCompleted(String taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        if (!task.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("Cannot update task of another user");
-        }
         task.setCompleted(true);
         Task updated = taskRepository.save(task);
         return toResponse(updated);
@@ -70,11 +64,9 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
-    public TaskResponse updateTask(String taskId, String userId, TaskRequest request) {
+    public TaskResponse updateTask(String taskId, TaskRequest request) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        if (!task.getUserId().equals(userId)) {
-            throw new IllegalArgumentException("Cannot update task of another user");
-        }
+
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         Task updated = taskRepository.save(task);

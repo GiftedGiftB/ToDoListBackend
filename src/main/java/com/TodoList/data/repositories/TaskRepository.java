@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface TaskRepository extends MongoRepository<Task,String> {
     List<Task> findByUserId(String userId);
-    //List<Task> findByTitleContainingIgnoreCaseAndUserId(String title, String userId);
 }

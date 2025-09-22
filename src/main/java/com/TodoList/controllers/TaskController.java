@@ -10,36 +10,38 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @PostMapping
     public TaskResponse createTask(@RequestBody TaskRequest request) {
         return taskService.createTask(request.getUserId(), request);
     }
 
-
     @GetMapping("/user/{userId}")
     public List<TaskResponse> getTasksByUserId(@PathVariable("userId") String userId) {
         return taskService.getTasksByUserId(userId);
     }
 
-    @DeleteMapping("/task{taskId}/user/{userId}")
-    public void deleteTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
-        taskService.deleteTask(taskId, userId);
+    @DeleteMapping("/{taskId}")
+    public void deleteTask(@PathVariable("taskId") String taskId) {
+        taskService.deleteTask(taskId);
     }
 
 
-    @PutMapping("/{taskId}/complete/user/{userId}")
-    public TaskResponse markCompleted(@PathVariable String taskId, @PathVariable String userId) {
-        return taskService.markCompleted(taskId,userId);
+    @PutMapping("/{taskId}")
+    public TaskResponse markCompleted(@PathVariable("taskId") String taskId) {
+        return taskService.markCompleted(taskId);
     }
 
-    @PutMapping("/task/{taskId}/user/{userId}")
-    public TaskResponse updateTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId, @RequestBody TaskRequest request) {
-        return taskService.updateTask(taskId, userId, request);
+    @PutMapping("/task/{taskId}")
+    public TaskResponse updateTask(@PathVariable("taskId") String taskId, @RequestBody TaskRequest request) {
+        return taskService.updateTask(taskId, request);
     }
 }

@@ -53,7 +53,7 @@ class TaskServiceTest{
         request.setDescription("Gift task");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         assertFalse(response.isCompleted());
-        TaskResponse completed = taskService.markCompleted(response.getId(), savedUser.getId());
+        TaskResponse completed = taskService.markCompleted(response.getId());
         assertTrue(completed.isCompleted());
 
     }
@@ -77,7 +77,7 @@ class TaskServiceTest{
         TaskRequest update = new TaskRequest();
         update.setTitle("New Title");
         update.setDescription("New Desc");
-        TaskResponse updated = taskService.updateTask(response.getId(), savedUser.getId(), update);
+        TaskResponse updated = taskService.updateTask(response.getId(), update);
         assertEquals("New Title", updated.getTitle());
         assertEquals("New Desc", updated.getDescription());
     }
@@ -88,7 +88,7 @@ class TaskServiceTest{
         request.setTitle("Task to delete");
         request.setDescription("Delete me");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
-        taskService.deleteTask(response.getId(), savedUser.getId());
+        taskService.deleteTask(response.getId());
         List<TaskResponse> tasks = taskService.getTasksByUserId(savedUser.getId());
         assertTrue(tasks.stream().noneMatch(t -> t.getId().equals(response.getId())));
     }
