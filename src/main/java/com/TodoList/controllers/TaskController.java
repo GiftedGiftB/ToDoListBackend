@@ -23,27 +23,23 @@ public class TaskController {
 
 
     @GetMapping("/user/{userId}")
-    public List<TaskResponse> getTasksByUser(@PathVariable String userId) {
-        return taskService.getTasksByUser(userId);
+    public List<TaskResponse> getTasksByUserId(@PathVariable("userId") String userId) {
+        return taskService.getTasksByUserId(userId);
     }
 
-    @DeleteMapping("/{taskId}/user/{userId}")
-    public void deleteTask(@PathVariable String taskId, @PathVariable String userId) {
+    @DeleteMapping("/task{taskId}/user/{userId}")
+    public void deleteTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
         taskService.deleteTask(taskId, userId);
     }
 
-    @GetMapping("/search/user/{userId}")
-    public List<TaskResponse> searchTasks(@PathVariable String userId, @RequestParam String keyword) {
-        return taskService.searchTasks(userId, keyword);
-    }
 
     @PutMapping("/{taskId}/complete/user/{userId}")
     public TaskResponse markCompleted(@PathVariable String taskId, @PathVariable String userId) {
         return taskService.markCompleted(taskId,userId);
     }
 
-    @PutMapping("/{taskId}/user/{userId}")
-    public TaskResponse updateTask(@PathVariable String taskId, @PathVariable String userId, @RequestBody TaskRequest request) {
+    @PutMapping("/task/{taskId}/user/{userId}")
+    public TaskResponse updateTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId, @RequestBody TaskRequest request) {
         return taskService.updateTask(taskId, userId, request);
     }
 }

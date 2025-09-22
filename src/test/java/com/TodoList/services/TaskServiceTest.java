@@ -42,7 +42,7 @@ class TaskServiceTest{
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         assertNotNull(response.getId());
         assertEquals("Community hangout", response.getTitle()); // fixed case
-        List<TaskResponse> tasks = taskService.getTasksByUser(savedUser.getId());
+        List<TaskResponse> tasks = taskService.getTasksByUserId(savedUser.getId());
         assertFalse(tasks.isEmpty());
     }
 
@@ -89,22 +89,8 @@ class TaskServiceTest{
         request.setDescription("Delete me");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         taskService.deleteTask(response.getId(), savedUser.getId());
-        List<TaskResponse> tasks = taskService.getTasksByUser(savedUser.getId());
+        List<TaskResponse> tasks = taskService.getTasksByUserId(savedUser.getId());
         assertTrue(tasks.stream().noneMatch(t -> t.getId().equals(response.getId())));
     }
 
-    @Test
-    void searchTasks() {
-        TaskRequest task1 = new TaskRequest();
-        task1.setTitle("Shopping list");
-        task1.setDescription("Groceries");
-        taskService.createTask(savedUser.getId(), task1);
-        TaskRequest task2 = new TaskRequest();
-        task2.setTitle("Work project");
-        task2.setDescription("Finish code");
-        taskService.createTask(savedUser.getId(), task2);
-        List<TaskResponse> found = taskService.searchTasks(savedUser.getId(), "shop");
-        assertFalse(found.isEmpty());
-        assertTrue(found.getFirst().getTitle().toLowerCase().contains("shop"));
-    }
 }

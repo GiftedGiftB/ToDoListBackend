@@ -32,9 +32,15 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getTasksByUser(String userId) {
-        return taskRepository.findByUserId(userId).stream().map(this::toResponse).collect(Collectors.toList());
+    public List<TaskResponse> getTasksByUserId(String userId) {
+        List<Task> tasks = taskRepository.findByUserId(userId);
+        System.out.println("Tasks for user " + userId + ": " + tasks.size());
+        for (Task t : tasks) {
+            System.out.println("Task id: " + t.getId() + " title: " + t.getTitle());
+        }
+        return tasks.stream().map(this::toResponse).collect(Collectors.toList());
     }
+
 
     @Override
     public void deleteTask(String taskId, String userId){
@@ -45,10 +51,6 @@ public class TaskServiceImplementation implements TaskService {
         taskRepository.delete(task);
     }
 
-    @Override
-    public List<TaskResponse> searchTasks(String userId, String keyword) {
-        return taskRepository.findByTitleContainingIgnoreCaseAndUserId(keyword, userId).stream().map(this::toResponse).collect(Collectors.toList());
-    }
 
     @Override
     public TaskResponse markCompleted(String taskId, String userId) {
