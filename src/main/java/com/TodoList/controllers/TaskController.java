@@ -1,6 +1,7 @@
 package com.TodoList.controllers;
 
-import com.TodoList.data.models.Task;
+import com.TodoList.dtos.requests.TaskRequest;
+import com.TodoList.dtos.responses.TaskResponse;
 import com.TodoList.services.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,32 +16,34 @@ public class TaskController {
     private final TaskService taskService;
 
 
-    @PostMapping("/add")
-    public Task addTask(@RequestBody Task task) {
-        return taskService.addTask(task);
+    @PostMapping
+    public TaskResponse createTask(@RequestBody TaskRequest request) {
+        return taskService.createTask(request.getUserId(), request);
     }
 
 
     @GetMapping("/user/{userId}")
-    public List<Task> getTasksByUser(@PathVariable String userId) {
+    public List<TaskResponse> getTasksByUser(@PathVariable String userId) {
         return taskService.getTasksByUser(userId);
     }
 
-
     @DeleteMapping("/{taskId}/user/{userId}")
-    public String deleteTask(@PathVariable String taskId, @PathVariable String userId) {
+    public void deleteTask(@PathVariable String taskId, @PathVariable String userId) {
         taskService.deleteTask(taskId, userId);
-        return "Task deleted successfully!";
     }
 
-
     @GetMapping("/search/user/{userId}")
-    public List<Task> searchTasks(@PathVariable String userId, @RequestParam String keyword) {
+    public List<TaskResponse> searchTasks(@PathVariable String userId, @RequestParam String keyword) {
         return taskService.searchTasks(userId, keyword);
     }
 
     @PutMapping("/{taskId}/complete/user/{userId}")
-    public Task markCompleted(@PathVariable String taskId, @PathVariable String userId) {
+    public TaskResponse markCompleted(@PathVariable String taskId, @PathVariable String userId) {
         return taskService.markCompleted(taskId,userId);
+    }
+
+    @PutMapping("/{taskId}/user/{userId}")
+    public TaskResponse updateTask(@PathVariable String taskId, @PathVariable String userId, @RequestBody TaskRequest request) {
+        return taskService.updateTask(taskId, userId, request);
     }
 }
