@@ -1,6 +1,7 @@
 package com.TodoList.controllers;
 
-import com.TodoList.data.models.User;
+import com.TodoList.dtos.requests.UserRequest;
+import com.TodoList.dtos.responses.UserResponse;
 import com.TodoList.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.register(user);
+    public UserResponse register(@RequestBody UserRequest request) {
+        return userService.register(request);
     }
 
-    @PostMapping("/login")
-    public User login(@RequestBody User user) {
-        return userService.login(user.getEmail(), user.getPassword());
-    }
+@PostMapping("/login")
+public UserResponse login(@RequestBody UserRequest request) {
+    return userService.login(request.getEmail(), request.getPassword());
+}
+
 }
