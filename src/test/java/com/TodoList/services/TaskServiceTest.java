@@ -35,7 +35,7 @@ class TaskServiceTest{
     }
 
     @Test
-    public void addTask() {
+    public void testThatTaskCanBeAdded() {
         TaskRequest request = new TaskRequest();
         request.setTitle("Community hangout");
         request.setDescription("Hangout");
@@ -47,7 +47,7 @@ class TaskServiceTest{
     }
 
     @Test
-    public void markTaskAsCompleted() {
+    public void testThatTaskCanBeMarkedAsCompleted() {
         TaskRequest request = new TaskRequest();
         request.setTitle("Gift");
         request.setDescription("Gift task");
@@ -58,7 +58,7 @@ class TaskServiceTest{
 
     }
     @Test
-    public void getTaskById() {
+    public void testThatTaskCanBeGottenByTaskId() {
         TaskRequest request = new TaskRequest();
         request.setTitle("Gift");
         request.setDescription("Gift task");
@@ -71,22 +71,22 @@ class TaskServiceTest{
     @Test
     void updateTask() {
         TaskRequest request = new TaskRequest();
-        request.setTitle("Old Title");
-        request.setDescription("Old Desc");
+        request.setTitle("project1");
+        request.setDescription("To-do App");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         TaskRequest update = new TaskRequest();
-        update.setTitle("New Title");
-        update.setDescription("New Desc");
+        update.setTitle("PhaseGate");
+        update.setDescription("Two project to go");
         TaskResponse updated = taskService.updateTask(response.getId(), update);
-        assertEquals("New Title", updated.getTitle());
-        assertEquals("New Desc", updated.getDescription());
+        assertEquals("PhaseGate", updated.getTitle());
+        assertEquals("Two project to go", updated.getDescription());
     }
 
     @Test
-    public void deleteTask() {
+    public void testThatTaskCanBeDeleted() {
         TaskRequest request = new TaskRequest();
-        request.setTitle("Task to delete");
-        request.setDescription("Delete me");
+        request.setTitle("project2");
+        request.setDescription("Kahoot");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         taskService.deleteTask(response.getId());
         List<TaskResponse> tasks = taskService.getTasksByUserId(savedUser.getId());
