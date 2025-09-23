@@ -24,52 +24,39 @@ public class TaskServiceImplementation implements TaskService {
         task.setCompleted(false);
         task.setUserId(userId);
         Task saved = taskRepository.save(task);
-        return toResponse(saved);
-    }
-
-    private TaskResponse toResponse(Task task){
-        return new TaskResponse(task.getId(), task.getTitle(), task.getDescription(), task.isCompleted());
+        return new TaskResponse(saved.getId(), saved.getTitle(), saved.getDescription(), saved.isCompleted());
     }
 
     @Override
     public List<TaskResponse> getTasksByUserId(String userId) {
-        List<Task> tasks = taskRepository.findByUserId(userId);
-        System.out.println("Tasks for user " + userId + ": " + tasks.size());
-        for (Task t : tasks) {
-            System.out.println("Task id: " + t.getId() + " title: " + t.getTitle());
-        }
-        return tasks.stream().map(this::toResponse).collect(Collectors.toList());
+        return taskRepository.findByUserId(userId).stream().map(t -> new TaskResponse(t.getId(), t.getTitle(), t.getDescription(), t.isCompleted())).toList();
     }
-
 
     @Override
     public void deleteTask(String taskId){
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        taskRepository.delete(task);
+        taskRepository.deleteById(taskId);
     }
-
 
     @Override
     public TaskResponse markCompleted(String taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
         task.setCompleted(true);
         Task updated = taskRepository.save(task);
-        return toResponse(updated);
+        return new TaskResponse(updated.getId(),updated.getTitle(), updated.getDescription(), updated.isCompleted());
     }
 
     @Override
     public TaskResponse getTaskById(String id){
         Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
-        return toResponse(task);
+        return new TaskResponse(task.getId(), task.getTitle(), task.getDescription(), task.isCompleted());
     }
 
     @Override
     public TaskResponse updateTask(String taskId, TaskRequest request) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         Task updated = taskRepository.save(task);
-        return toResponse(updated);
+        return new TaskResponse(updated.getId(), updated.getTitle(), updated.getDescription(), updated.isCompleted());
     }
 }
