@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 
-public class UserServiceTest {
+public class UserServiceTest{
     @Autowired
     private UserService userService;
 
@@ -26,7 +26,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testRegisterNewUser(){
+    public void testThatNewUserCanBeRegistered(){
         UserRequest request = new UserRequest();
         request.setUsername("Gift");
         request.setEmail("gift@gmail.com");
@@ -37,7 +37,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoginUser(){
+    public void testThatUserCanLogin(){
         UserRequest request = new UserRequest();
         request.setUsername("Gift");
         request.setEmail("gift@gmail.com");
@@ -48,14 +48,28 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoginInvalidPassword() {
+    public void testThatUserCanLoginWithCorrectPassword() {
         UserRequest request = new UserRequest();
         request.setUsername("Gift");
         request.setEmail("gift@gmail.com");
         request.setPassword("12345");
         userService.register(request);
-        Exception ex = assertThrows(RuntimeException.class, () -> userService.login("gift@gmail.com", "wrongpass"));
-        assertTrue(ex.getMessage().contains("Invalid password"));
+        UserResponse user = userService.login("gift@gmail.com", "12345");
+        assertNotNull(user);
+        assertEquals("gift@gmail.com", user.getEmail());
     }
+
+    @Test
+    public void testThatLoginWithWrongPasswordThrowsException() {
+        UserRequest request = new UserRequest();
+        request.setUsername("Gift");
+        request.setEmail("gift@gmail.com");
+        request.setPassword("12345");
+        userService.register(request);
+        Exception exception = assertThrows(RuntimeException.class, () -> userService.login("gift@gmail.com", "wrongpassword"));
+        assertTrue(exception.getMessage().contains("Invalid password"));
+    }
+
+
 
 }
