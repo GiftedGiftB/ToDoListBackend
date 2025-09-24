@@ -15,6 +15,10 @@ public class UserServiceImplementation implements UserService{
 
     @Override
     public UserResponse register(UserRequest request){
+        if (userRepository.findByEmail(request.getEmail()).isPresent()){
+            throw new RuntimeException("Email has been used before!");
+        }
+
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
