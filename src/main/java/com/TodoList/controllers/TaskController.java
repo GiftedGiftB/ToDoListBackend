@@ -3,14 +3,12 @@ package com.TodoList.controllers;
 import com.TodoList.dtos.requests.TaskRequest;
 import com.TodoList.dtos.responses.TaskResponse;
 import com.TodoList.services.TaskService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-//@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
