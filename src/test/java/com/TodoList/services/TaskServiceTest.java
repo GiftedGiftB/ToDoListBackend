@@ -53,7 +53,7 @@ class TaskServiceTest{
         request.setDescription("Gift task");
         TaskResponse response = taskService.createTask(savedUser.getId(), request);
         assertFalse(response.isCompleted());
-        TaskResponse completed = taskService.markCompleted(response.getId());
+        TaskResponse completed = taskService.markCompleted(response.getId(),true);
         assertTrue(completed.isCompleted());
 
     }
