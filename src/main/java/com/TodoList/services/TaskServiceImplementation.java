@@ -38,9 +38,9 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
-    public TaskResponse markCompleted(String taskId) {
+    public TaskResponse markCompleted(String taskId, boolean completed) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        task.setCompleted(true);
+        task.setCompleted(completed);
         Task updated = taskRepository.save(task);
         return new TaskResponse(updated.getId(),updated.getTitle(), updated.getDescription(), updated.isCompleted());
     }
