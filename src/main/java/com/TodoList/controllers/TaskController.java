@@ -1,11 +1,13 @@
 package com.TodoList.controllers;
 
+import com.TodoList.dtos.requests.CompleteRequest;
 import com.TodoList.dtos.requests.TaskRequest;
 import com.TodoList.dtos.responses.TaskResponse;
 import com.TodoList.services.TaskService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -32,10 +34,18 @@ public class TaskController {
         taskService.deleteTask(taskId);
     }
 
+//    @PutMapping("/{taskId}")
+//    public TaskResponse markCompleted(@PathVariable("taskId") String taskId, @RequestBody Map<String, Object> body) {
+//        boolean completed = body.getOrDefault("completed", false);
+//        return taskService.markCompleted(taskId, completed);
+//    }
 
     @PutMapping("/{taskId}")
-    public TaskResponse markCompleted(@PathVariable("taskId") String taskId) {
-        return taskService.markCompleted(taskId);
+    public TaskResponse markCompleted(@PathVariable String taskId,
+                                      @RequestBody Map<String,Object> body) {
+        boolean completed = body.get("completed") instanceof Boolean ?
+                (Boolean) body.get("completed") : true;
+        return taskService.markCompleted(taskId, completed);
     }
 
     @PutMapping("/task/{taskId}")
